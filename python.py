@@ -60,6 +60,7 @@ def process_financial_data(df: pd.DataFrame) -> pd.DataFrame:
 def get_ai_analysis(data_for_ai: str, api_key: str) -> str:
     """Gửi dữ liệu phân tích đến Gemini API và nhận nhận xét tổng quan."""
     try:
+        # Nếu api_key là None hoặc rỗng, Client sẽ thất bại, nhưng chúng ta đã kiểm tra ở giao diện.
         client = genai.Client(api_key=api_key)
         model_name = 'gemini-2.5-flash' 
 
@@ -77,6 +78,7 @@ def get_ai_analysis(data_for_ai: str, api_key: str) -> str:
         return response.text
 
     except APIError as e:
+        # Giữ nguyên phần xử lý lỗi API Key không hợp lệ, vì nó đã được thông báo từ Google
         return f"Lỗi gọi Gemini API: Vui lòng kiểm tra Khóa API hoặc giới hạn sử dụng. Chi tiết lỗi: {e}"
     except Exception as e:
         return f"Đã xảy ra lỗi không xác định: {e}"
@@ -116,6 +118,7 @@ def get_chat_response(messages: List[Dict[str, str]], context: str, api_key: str
         return response.text
 
     except APIError as e:
+        # Giữ nguyên phần xử lý lỗi API Key không hợp lệ, vì nó đã được thông báo từ Google
         return f"Lỗi Chat API: Vui lòng kiểm tra Khóa API. Chi tiết lỗi: {e}"
     except Exception as e:
         return f"Đã xảy ra lỗi không xác định trong Chat: {e}"
